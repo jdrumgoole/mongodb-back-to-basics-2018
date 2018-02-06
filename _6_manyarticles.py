@@ -3,29 +3,24 @@ import string
 import datetime
 import random
 
-
 def randomString(size, letters=string.letters):
     return "".join([random.choice(letters) for _ in xrange(size)])
 
-
-client = pymongo.MongoClient()
-
-
-def makeArticle(count, author, timestamp):
+def makeArticle(count ):
     return {"_id": count,
-            "title": randomString(20),
+            "title": "Title " + str( count ),
             "body": randomString(80),
-            "author": author,
-            "postdate": timestamp}
+            "author": "USER_" + str( random.randrange( 0, 999999 )),
+            "postdate": datetime.datetime.now()}
 
-
-def makeUser(username):
-    return {"username": username,
+def makeUser( count ):
+    return {"_id": "USER_" + str( count ),
             "password": randomString(10),
             "karma": random.randint(0, 500),
             "registered" : datetime.datetime.utcnow(),
             "lang": "EN"}
 
+client = pymongo.MongoClient()
 
 blogDatabase = client["blog"]
 usersCollection = blogDatabase["users"]
@@ -34,14 +29,11 @@ articlesCollection = blogDatabase["articles"]
 usersCollection.drop()
 articlesCollection.drop()
 
-ts = datetime.datetime.now()
-
 users = []
 count = 0
-for i in range(1000000):
-    username = "USER_" + str(i)
+for i in range(100000):
 
-    users.append( makeUser( username ))
+    users.append( makeUser( i ))
 
     if ( len( users ) % 1000  ) == 0 :
         usersCollection.insert_many( users )
@@ -52,10 +44,8 @@ for i in range(1000000):
 articles = []
 count = 0
 
-for i in range( 1000000) :
-    username = "USER_" + str( random.randrange( 0, 999999 ))
-    ts = ts + datetime.timedelta(seconds=1)
-    articles.append( makeArticle(i, username, ts))
+for i in range(100000) :
+    articles.append( makeArticle(i ))
 
     if (len( articles ) % 1000 ) == 0 :
         articlesCollection.insert_many( articles )
