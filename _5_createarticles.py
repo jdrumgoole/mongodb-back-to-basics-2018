@@ -5,8 +5,14 @@
 import pymongo
 import pprint
 import datetime
+import sys
 
-client = pymongo.MongoClient()
+if len(sys.argv) > 1 :
+    host=sys.argv[1]
+else:
+    host="mongodb://localhost:27017"
+
+client = pymongo.MongoClient(host=host) # defaults to mongodb://localhost:27017
 blogDatabase = client["blog"]
 usersCollection = blogDatabase["users"]
 articlesCollection = blogDatabase[ "articles" ]

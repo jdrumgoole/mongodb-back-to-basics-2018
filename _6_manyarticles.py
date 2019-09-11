@@ -2,6 +2,7 @@ import pymongo
 import string
 import datetime
 import random
+import sys
 
 
 def randomString(size, letters=string.ascii_letters):
@@ -24,7 +25,12 @@ def makeUser(count):
             "lang": "EN"}
 
 
-client = pymongo.MongoClient()
+if len(sys.argv) > 1 :
+    host=sys.argv[1]
+else:
+    host="mongodb://localhost:27017"
+
+client = pymongo.MongoClient(host=host) # defaults to mongodb://localhost:27017
 
 blogDatabase = client["blog"]
 usersCollection = blogDatabase["users"]
