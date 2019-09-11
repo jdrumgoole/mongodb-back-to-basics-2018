@@ -11,13 +11,21 @@
 
 import pymongo
 import pprint
+import sys
 
 from pymongo.errors import ConnectionFailure
-client = pymongo.MongoClient() # defaults to mongodb://localhost:27017
+
+if len(sys.argv) > 1 :
+    host=sys.argv[1]
+else:
+    host="mongodb://localhost:27017"
+
+client = pymongo.MongoClient(host=host) # defaults to mongodb://localhost:27017
+
 try:
     # The ismaster command is cheap and does not require auth.
     status = client.admin.command( "ismaster" )
-    print( "mongod server running on localhost:27017" )
+    print(f"mongod server running on {host}")
     pprint.pprint( status )
 except ConnectionFailure:
-    print( "MongoDB Server (mongod) not available on localhost:27017" )
+    print( f"MongoDB Server (mongod) not available on {host}" )
