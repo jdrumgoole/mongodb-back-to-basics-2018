@@ -41,12 +41,28 @@ https://github.com/jdrumgoole/mongdb-back-to-basics-2018/tree/master/data
     zips_collection = b2b_database["zips"]
 
     count = 0
+
     with open("zips.json", "r") as fd:
         for line in fd:
             line = line[:-1]  # clip \n
             doc = json.loads(line)  # convert to a dict object
             zips_collection.insert_one(doc)
             count = count + 1
-            #print( "%i. %s" % ( count, line))
+            print( "%i. %s" % ( count, line))
 
-    print("Inserted %i documents" % zips_collection.count())
+    # doc_list = []
+    # with open("zips.json", "r") as fd:
+    #     for line in fd:
+    #         line = line[:-1]  # clip \n
+    #         doc = json.loads(line)  # convert to a dict object
+    #         doc_list.append(doc)
+    #         count = count + 1
+    #         print( "%i. %s" % ( count, line))
+    #         if len(doc_list) % 1000 == 0:
+    #             zips_collection.insert_many(doc_list)
+    #             doc_list=[]
+    #
+    # if len(doc_list) > 0 :
+    #     zips_collection.insert_many(doc_list)
+
+    print("Inserted %i documents" % zips_collection.count_documents({}))
