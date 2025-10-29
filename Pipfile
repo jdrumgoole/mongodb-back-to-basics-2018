@@ -8,7 +8,10 @@ verify_ssl = true
 [packages]
 pymongo = "*"
 dnspython = "*"
-requests = "*"
+requests = ">=2.31.0"
+urllib3 = ">=1.26.5"
+certifi = ">=2023.7.22"
+idna = ">=3.7"
 
 [requires]
-python_version = "3.7"
+python_version = "3.10"
